@@ -1,0 +1,48 @@
+# Valid fixture - all required fields present
+
+[valid-extension]
+status = "verified"
+distribution = "source"
+license = "MIT"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+api_versions = ["rusq:0.1"]
+platforms = ["macos-aarch64", "macos-x86_64"]
+reviewed_at = "2026-07-18"
+
+[candidate-extension]
+status = "candidate"
+distribution = "source"
+license = "NOASSERTION"
+source_revision = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+[external-extension]
+status = "external"
+distribution = "source"
+license = "Apache-2.0"
+source_revision = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+reviewed_at = "2026-07-15"
+
+[blocked-extension]
+status = "blocked"
+distribution = "source-and-binary"
+license = "GPL-3.0-only"
+source_revision = "cccccccccccccccccccccccccccccccccccccccc"
+reviewed_at = "2026-07-10"
+
+[binary-extension]
+status = "verified"
+distribution = "binary"
+license = "BSD-3-Clause"
+source_revision = "dddddddddddddddddddddddddddddddddddddddd"
+api_versions = ["rusq:0.1"]
+platforms = ["linux-x86_64"]
+reviewed_at = "2026-07-18"
+
+[source-and-binary-extension]
+status = "verified"
+distribution = "source-and-binary"
+license = "ISC"
+source_revision = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+api_versions = ["rusq:0.1"]
+platforms = ["macos-aarch64"]
+reviewed_at = "2026-07-18"

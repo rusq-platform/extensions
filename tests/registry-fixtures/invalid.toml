@@ -1,0 +1,84 @@
+# Invalid fixtures - one error per case
+
+# Case 1: missing status
+[missing-status]
+distribution = "source"
+license = "MIT"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+
+# Case 2: unsupported status
+[unsupported-status]
+status = "pending"
+distribution = "source"
+license = "MIT"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+
+# Case 3: missing source_revision
+[missing-source-revision]
+status = "verified"
+distribution = "source"
+license = "MIT"
+
+# Case 4: empty license for verified
+[empty-license-verified]
+status = "verified"
+distribution = "source"
+license = ""
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+reviewed_at = "2026-07-18"
+
+# Case 5: candidate with no NOASSERTION and unrecognized SPDX
+[candidate-no-noassertion]
+status = "candidate"
+distribution = "source"
+license = "UnknownLicenseXYZ"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+
+# Case 6: malformed SPDX identifier
+[malformed-spdx]
+status = "verified"
+distribution = "source"
+license = "MIT License"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+reviewed_at = "2026-07-18"
+
+# Case 7: verified without reviewed_at
+[verified-no-reviewed-at]
+status = "verified"
+distribution = "source"
+license = "MIT"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+
+# Case 8: verified without api_versions
+[verified-no-api-versions]
+status = "verified"
+distribution = "source"
+license = "MIT"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+platforms = ["macos-aarch64"]
+reviewed_at = "2026-07-18"
+
+# Case 9: verified without platforms
+[verified-no-platforms]
+status = "verified"
+distribution = "source"
+license = "MIT"
+source_revision = "b54cb81708d06912d50e6bb9fd2fd2103b9dda25"
+api_versions = ["rusq:0.1"]
+reviewed_at = "2026-07-18"
+
+# Case 10: malformed source_revision (too short)
+[short-revision]
+status = "verified"
+distribution = "source"
+license = "MIT"
+source_revision = "b54cb"
+reviewed_at = "2026-07-18"
+
+# Case 11: malformed source_revision (uppercase)
+[uppercase-revision]
+status = "verified"
+distribution = "source"
+license = "MIT"
+source_revision = "B54CBB81708D06912D50E6BB9FD2FD2103B9DDA25"
+reviewed_at = "2026-07-18"
