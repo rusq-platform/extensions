@@ -147,6 +147,8 @@ function auditExtension({ extensionId, registryDir, sourceDir }) {
 
   if (policyEntry.status === 'verified') {
     add(checks, 'pass', 'policy status is verified');
+  } else if (policyEntry.status === 'upstream-verified') {
+    add(checks, 'warn', 'policy status is upstream-verified; Rusq local review is pending');
   } else {
     add(checks, 'warn', `policy status is ${policyEntry.status}; not installable yet`);
   }
@@ -184,13 +186,19 @@ function auditExtension({ extensionId, registryDir, sourceDir }) {
     add(checks, 'warn', 'source Gitlink check skipped; pass --source to enable it');
   }
 
-  if (policyEntry.status === 'verified') {
+  if (['upstream-verified', 'verified'].includes(policyEntry.status)) {
     if (!Array.isArray(policyEntry.api_versions) || policyEntry.api_versions.length === 0) {
-      add(checks, 'fail', 'verified entries require api_versions');
+      add(checks, 'fail', `${policyEntry.status} entries require api_versions`);
     } else if (policyEntry.api_versions.some(version => !/^rusq:\d+\.\d+$/.test(version))) {
       add(checks, 'fail', 'api_versions must use Rusq host versions like rusq:0.1');
     } else {
       add(checks, 'pass', `api_versions: ${policyEntry.api_versions.join(', ')}`);
+    }
+
+    if (!Array.isArray(policyEntry.platforms) || policyEntry.platforms.length === 0) {
+      add(checks, 'fail', `${policyEntry.status} entries require platforms`);
+    } else {
+      add(checks, 'pass', `platforms: ${policyEntry.platforms.join(', ')}`);
     }
   }
 

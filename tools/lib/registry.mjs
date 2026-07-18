@@ -13,7 +13,8 @@ import { parseGitmodules } from './gitmodules.mjs';
 import { validateLicense } from './licenses.mjs';
 
 // Allowed status values
-const STATUS_VALUES = new Set(['candidate', 'verified', 'external', 'blocked']);
+const STATUS_VALUES = new Set(['candidate', 'upstream-verified', 'verified', 'external', 'blocked']);
+const RUSQ_METADATA_STATUSES = new Set(['upstream-verified', 'verified']);
 
 // Allowed distribution values
 const DISTRIBUTION_VALUES = new Set(['source', 'binary', 'source-and-binary']);
@@ -159,9 +160,15 @@ export function validatePolicyEntry(extensionId, entry, existsInUpstream) {
       errors.push(`[${extensionId}] ${licenseResult.error}`);
     }
 
-    // NOASSERTION only for candidate status
-    if (entry.license === 'NOASSERTION' && entry.status && entry.status !== 'candidate') {
-      errors.push(`[${extensionId}] NOASSERTION license only allowed for 'candidate' status`);
+    // NOASSERTION is allowed while Rusq local license review is still pending.
+    if (
+      entry.license === 'NOASSERTION' &&
+      entry.status &&
+      !['candidate', 'upstream-verified'].includes(entry.status)
+    ) {
+      errors.push(
+        `[${extensionId}] NOASSERTION license only allowed for 'candidate' or 'upstream-verified' status`,
+      );
     }
   }
 
@@ -183,10 +190,10 @@ export function validatePolicyEntry(extensionId, entry, existsInUpstream) {
     }
   }
 
-  // Validate api_versions for verified status
-  if (entry.status === 'verified') {
+  // Validate api_versions for statuses exposed to Rusq host compatibility checks.
+  if (RUSQ_METADATA_STATUSES.has(entry.status)) {
     if (!entry.api_versions || !Array.isArray(entry.api_versions) || entry.api_versions.length === 0) {
-      errors.push(`[${extensionId}] 'api_versions' required for 'verified' status`);
+      errors.push(`[${extensionId}] 'api_versions' required for '${entry.status}' status`);
     } else {
       for (const apiVersion of entry.api_versions) {
         if (typeof apiVersion !== 'string' || !API_VERSION_PATTERN.test(apiVersion)) {
@@ -198,10 +205,10 @@ export function validatePolicyEntry(extensionId, entry, existsInUpstream) {
     }
   }
 
-  // Validate platforms for verified status
-  if (entry.status === 'verified') {
+  // Validate platforms for statuses exposed to Rusq host compatibility checks.
+  if (RUSQ_METADATA_STATUSES.has(entry.status)) {
     if (!entry.platforms || !Array.isArray(entry.platforms) || entry.platforms.length === 0) {
-      errors.push(`[${extensionId}] 'platforms' required for 'verified' status`);
+      errors.push(`[${extensionId}] 'platforms' required for '${entry.status}' status`);
     }
   }
 

@@ -41,13 +41,13 @@ Rusq-owned policy file defining whether Rusq may build or distribute an extensio
 
 ```toml
 [extension-id]
-status = "candidate" | "verified" | "external" | "blocked"
+status = "candidate" | "upstream-verified" | "verified" | "external" | "blocked"
 distribution = "source" | "binary" | "source-and-binary"
 license = "SPDX-ID" | "SPDX-expression" | "NOASSERTION"
 source_revision = "40-char-hex-commit"
 api_versions = ["rusq:0.1", ...]  # optional for candidate
 platforms = ["macos-aarch64", "macos-x86_64", "linux-x86_64"]  # optional for candidate
-reviewed_at = "YYYY-MM-DD"  # required for verified, external, blocked
+reviewed_at = "YYYY-MM-DD"  # required for upstream-verified, verified, external, blocked
 ```
 
 #### Required Fields
@@ -58,15 +58,16 @@ reviewed_at = "YYYY-MM-DD"  # required for verified, external, blocked
 | `distribution` | enum | all | Distribution mode |
 | `license` | SPDX | all | License identifier or expression |
 | `source_revision` | string | all | Immutable upstream commit (40-char hex) |
-| `api_versions` | array | verified | Supported Rusq API versions |
-| `platforms` | array | verified | Supported build targets |
-| `reviewed_at` | date | verified, external, blocked | Date of last review |
+| `api_versions` | array | upstream-verified, verified | Supported Rusq API versions |
+| `platforms` | array | upstream-verified, verified | Supported build targets |
+| `reviewed_at` | date | upstream-verified, verified, external, blocked | Date of last review |
 
 #### Status Values
 
 | Status | Description |
 |--------|-------------|
 | `candidate` | Initial entry, unreviewed. May use `NOASSERTION` for license. |
+| `upstream-verified` | Present in the upstream registry and exposed for Rusq development/indexing, but not locally reviewed by Rusq. May use `NOASSERTION` for license. |
 | `verified` | Reviewed for license, API compatibility, build, and distribution. |
 | `external` | Rusq acknowledges but does not build/distribute. |
 | `blocked` | Known incompatible or problematic. |

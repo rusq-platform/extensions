@@ -158,6 +158,24 @@ describe('Policy Validation', () => {
     assert.strictEqual(result.valid, true, result.errors.join(', '));
   });
 
+  test('validates upstream-verified with NOASSERTION and Rusq metadata', () => {
+    const policyEntries = new Map([
+      ['upstream-ext', {
+        status: 'upstream-verified',
+        distribution: 'source',
+        license: 'NOASSERTION',
+        source_revision: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        api_versions: ['rusq:0.1'],
+        platforms: ['macos-aarch64', 'macos-x86_64', 'linux-x86_64'],
+        reviewed_at: '2026-07-18',
+      }],
+    ]);
+
+    const upstreamIds = new Set(['upstream-ext']);
+    const result = validatePolicy(policyEntries, upstreamIds);
+    assert.strictEqual(result.valid, true, result.errors.join(', '));
+  });
+
   test('rejects policy entry not in upstream', () => {
     const policyEntries = new Map([
       ['ghost-ext', {
